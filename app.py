@@ -310,6 +310,14 @@ def check_password(stored, provided):
 
 
 # ─── Routes: Public ──────────────────────────────────────────────────────────
+@app.route('/test-gemini')
+def test_gemini():
+    try:
+        response = gemini_model.generate_content("Say hello")
+        return f"✅ Gemini works: {response.text}"
+    except Exception as e:
+        return f"❌ Gemini error: {str(e)}"
+    
 @app.route('/')
 def index():
     return redirect(url_for('login'))
