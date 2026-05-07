@@ -666,11 +666,8 @@ Answer: [A/B/C/D]
 
 Separate each question block with a single blank line."""
 
-            response = gemini_client.models.generate_content(
-    model="gemini-2.0-flash",
-    contents=prompt
-)
-generated_text = response.text.strip()
+            response = gemini_model.generate_content(prompt)
+            generated_text = response.text.strip()
 
             blocks = re.split(r'\n\s*\n', generated_text)
             saved_count = 0
