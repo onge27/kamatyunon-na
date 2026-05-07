@@ -16,27 +16,17 @@ load_dotenv()
 
 
 # ─── Gemini AI Setup ─────────────────────────────────────────────
-from dotenv import load_dotenv
-import os
-import google.generativeai as genai
+# ─── Gemini AI Setup ─────────────────────────────────────────────
+from google import genai
 
-load_dotenv()  # load .env file
-
-# Get API key
 api_key = os.getenv("GEMINI_API_KEY")
 
-# DEBUG (remove later if working)
 print("🔍 GEMINI API KEY LOADED:", "YES" if api_key else "NO")
 
-# Hard stop if missing
 if not api_key:
     raise Exception("❌ GEMINI_API_KEY not found. Please check your .env file")
 
-# Configure Gemini
-genai.configure(api_key=api_key)
-
-# Initialize model
-gemini_model = genai.GenerativeModel("gemini-1.5-flash-latest")
+gemini_client = genai.Client(api_key=api_key)
 
 print("✅ Gemini initialized successfully")
 
@@ -676,8 +666,11 @@ Answer: [A/B/C/D]
 
 Separate each question block with a single blank line."""
 
-            response = gemini_model.generate_content(prompt)
-            generated_text = response.text.strip()
+            response = gemini_client.models.generate_content(
+    model="gemini-2.0-flash",
+    contents=prompt
+)
+generated_text = response.text.strip()
 
             blocks = re.split(r'\n\s*\n', generated_text)
             saved_count = 0
